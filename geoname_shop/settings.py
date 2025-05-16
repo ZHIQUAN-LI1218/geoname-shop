@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-kcfq!4tr$3x7qg@b%wk7=we*w2!ktl3+hdk*+qi6_(r=)08ch0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dollarvocal-bananaadios-8000.codio-box.uk', 'dollarvocal-bananaadios-8080.codio-box.uk']
+ALLOWED_HOSTS = ['dollarvocal-bananaadios-8000.codio-box.uk', 'dollarvocal-bananaadios-8080.codio-box.uk',
+                 'geoname-shop-1.onrender.com',
+]
 
 
 # Application definition
