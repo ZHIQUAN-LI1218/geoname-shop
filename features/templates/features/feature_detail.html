@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="feature-card mx-auto" style="max-width:700px;">
+    <h1>{{ object.name }}</h1>
+    <div class="meta mb-2">{{ object.feature_type }}</div>
+    <div class="desc mb-3">
+      <p><strong>Size:</strong> {{ object.size }}</p>
+      <p><strong>Location:</strong> ({{ object.latitude }}, {{ object.longitude }})</p>
+      <p>{{ object.description }}</p>
+    </div>
+    <div class="actions">
+      <a href="{% url 'orders:add_to_cart' object.pk %}" class="btn btn-success me-2">Add to Cart</a>
+      <a href="{% url 'features:list' %}" class="btn btn-outline-secondary">Back to Catalog</a>
+    </div>
+  </div>
+{% endblock %}

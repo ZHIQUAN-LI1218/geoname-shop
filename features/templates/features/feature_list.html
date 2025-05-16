@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Feature Catalog</h1>
+
+  <form method="get" style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+    <input
+      type="text"
+      name="q"
+      class="form-control"
+      placeholder="Search by name or type"
+      value="{{ request.GET.q|default:'' }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <div class="feature-grid">
+    {% for feature in object_list %}
+      <div class="feature-card">
+        <h5>{{ feature.name }}</h5>
+        <div class="meta">{{ feature.feature_type }}</div>
+        <div class="desc">
+          <small>Size: {{ feature.size }}</small><br>
+          <small>Location: ({{ feature.latitude }}, {{ feature.longitude }})</small>
+        </div>
+        <div class="actions">
+          <a href="{% url 'features:detail' feature.pk %}" class="btn btn-outline-secondary btn-sm">Details</a>
+          <a href="{% url 'orders:add_to_cart' feature.pk %}" class="btn btn-success btn-sm">Add to Cart</a>
+        </div>
+      </div>
+    {% empty %}
+      <p>No features found.</p>
+    {% endfor %}
+  </div>
+
+  {% if is_paginated %}
+    <nav style="display:flex; align-items:center; justify-content:center; gap:1rem; margin-top:1rem;">
+      {% if page_obj.has_previous %}
+        <a
+          class="btn btn-outline-primary btn-sm"
+          href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+          Previous
+        </a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a
+          class="btn btn-outline-primary btn-sm"
+          href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+          Next
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% endblock %}

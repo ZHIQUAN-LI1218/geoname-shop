@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Order History</h1>
+  {% if orders %}
+    <div class="accordion" id="historyAccordion">
+      {% for order in orders %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ order.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ order.id }}">
+              Order #{{ order.id }} — {{ order.created|date:"Y-m-d H:i" }} — ${{ order.total_price }}
+            </button>
+          </h2>
+          <div id="collapse{{ order.id }}" class="accordion-collapse collapse" data-bs-parent="#historyAccordion">
+            <div class="accordion-body">
+              <table class="table">
+                <thead>
+                  <tr><th>Feature</th><th>Qty</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                  {% for item in order.items.all %}
+                    <tr>
+                      <td>{{ item.feature.name }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>${{ item.total_price }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% if is_paginated %}
+      <nav aria-label="Page nav" class="mt-3">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+          {% endif %}
+          <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      You have no past orders. <a href="{% url 'features:list' %}">Continue shopping</a>.
+    </div>
+  {% endif %}
+{% endblock %}
